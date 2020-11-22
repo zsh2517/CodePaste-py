@@ -1,2 +1,4 @@
 data/
 static/
+*.pyc
+templates/temp

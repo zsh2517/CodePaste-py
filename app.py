@@ -136,9 +136,23 @@ async def return_200(data):
 
 # NOTE
 
-
+err = """
+sorry,<br>
+Due to some reasons, I changed some of the JavaScript, and it didn't work.<br>
+However, I didn't make a backup, and new bugs came out when I fix the old ones.<br>
+So please wait, the website will be reopen in 2020/06/14<br>
+"""
+err = """
+因为一些原因，网站前段时间临时改了一些内容<br>
+由于没有备份，昨天在改回去的时候，出了一些问题<br>
+解决这些问题的时候，又出现了新的BUG<br>
+目前可能在一定程度上影响访问<br>
+所以暂时关闭。预计1~2天恢复<br>
+2020-06-12
+"""
 @app.route("/", methods=["GET"])
 async def index():
+    # return err
     resp = await make_response("302 TO /PASTE")
     resp.headers["Location"] = "/paste"
     resp.status_code = 302
@@ -149,6 +163,7 @@ async def index():
 @app.route("/paste", methods=["GET"])
 @app.route("/paste/", methods=["GET"])
 async def pastemain():
+    # return err
     d = {
         "language": "markdown",
         "code": text_200,
@@ -204,9 +219,12 @@ async def postdata():
 # GET 方式请求页面
 @app.route("/paste/<pageid>", methods=["GET"])
 async def getpaste(pageid):
+    # return err
     if pageid == "":
         print("QWQ")
         return await index()
+    if pageid != pageid.lower():
+        pageid = pageid.lower()
     if os.path.exists("./data/" + pageid + ".json"):
         f = open("./data/" + pageid + ".json", "r", encoding="utf-8")
         data = json.load(f)
@@ -238,4 +256,4 @@ async def verify(pageid):
         return await getpaste(pageid)
     pass
 
-app.run(host="0.0.0.0", port=5000, debug=True)
+app.run(host="0.0.0.0", port=5010, debug=True)
