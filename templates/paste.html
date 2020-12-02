@@ -54,7 +54,7 @@
                         <input class="form-control" type="text" style="width:8em" placeholder="Language"
                                id="inputlang" value={{ language }}>&nbsp;
                         <button class="btn btn-success" type="button" id="btn-refresh"
-                                onclick="highlight_code()">切换语言</button>&nbsp;
+                                onclick="simplify_code()">切换语言</button>&nbsp;
                     </form>
                     <!-- <a class="nav-link" href="#">Paste</a> -->
                 </li>
@@ -276,19 +276,24 @@
         }
         function highlight_code() {
             var e = document.getElementById("codeArea");
-            var text = htmlencode(e.innerText).replace(/\n\n/g, "\n").replace(/\n$/, "");
-            e.innerHTML = text;
-            console.log(text);
+            // debugger;
             // alert(document.getElementById("inputlang").value);
             e.setAttribute("class", $("#inputlang").val());
             $("#postdata_lang").val($("#inputlang").val());
             hljs.highlightBlock(e);
-            e.innerHTML = "<ol><li>" + e.innerHTML.replace(/\n/g, "\n</li><li>") + "\n</li></ul>";
-            // }
+            e.innerHTML = "<ol><li>" + e.innerHTML.replace(/\n/g, "</li><li>") + "</li></ul>";
+                // }
         }
-        var e = document.getElementById("codeArea");
-        hljs.highlightBlock(e);
-        e.innerHTML = "<ol><li>" + e.innerHTML.replace(/\n/g, "\n</li><li>") + "\n</li></ul>";
+        function simplify_code() {
+            var e = document.getElementById("codeArea");
+            var text = e.innerText;
+            text = e.innerHTML.replaceAll("</li>", "\n").replaceAll("<li>", "");
+            text = text.substring(4, text.length - 6);
+            // var text = htmlencode(e.innerText).replace(/\n\n/g, "\n").replace(/\n$/, "");
+            e.innerHTML = text;
+            console.log(text);
+            highlight_code();
+        }
         function insertTabAtCaret(event) {
             // From. https://stackoverflow.com/questions/45396531/javascript-using-the-tab-key-in-a-contenteditable-div
             if (event.keyCode === 9) {
@@ -404,10 +409,15 @@
         if ({{ notfound }}) {
             show_404();
         }
+        highlight_code();
+        // var e = document.getElementById("codeArea");
+        // hljs.highlightBlock(e);
+        // e.innerHTML = "<ol><li>" + e.innerHTML.replace(/\n/g, "\n</li><li>") + "\n</li></ul>";
+
         document.getElementById("codeArea").addEventListener("keydown", insertTabAtCaret);
         document.getElementById("inputlang").addEventListener("keydown", inputlang_listen);
         document.getElementById("nav_inputurl").addEventListener("keydown", nav_openurl_listen);
-        document.getElementById("btn-refresh").addEventListener("click", highlight_code);
+        document.getElementById("btn-refresh").addEventListener("click", simplify_code);
     </script>
 </body>
 
