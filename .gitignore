@@ -5,3 +5,5 @@ templates/temp
 config.py
 data.json
 *copy*
+
+files.txt
