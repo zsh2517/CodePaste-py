@@ -256,4 +256,12 @@ async def verify(pageid):
         return await getpaste(pageid)
     pass
 
+@app.route("/pastelist", methods=["GET"])
+async def pastelist():
+    return await render_template("ls.html")
+
+@app.route("/pastelist/json", methods=["GET"])
+async def pastelist_json():
+    return open("data.json", "r", encoding="utf-8").read()
+
 app.run(host="0.0.0.0", port=5010, debug=True)

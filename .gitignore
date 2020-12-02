@@ -3,3 +3,5 @@ static/
 *.pyc
 templates/temp
 config.py
+data.json
+*copy*
